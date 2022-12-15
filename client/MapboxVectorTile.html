@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>MapboxVectorTile</title>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.99/Build/CesiumUnminified/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.99/Build/Cesium/Widgets/widgets.css" rel="stylesheet"/>
+
+    <script>
+        const module = {};
+    </script>
+
+    <script src="./mapbox-gl.js"></script>
+
+    <script>
+        const Mapbox = module.exports;
+        window.Mapbox = Mapbox;
+    </script>
+
+</head>
+<body>
+<div id="cesiumContainer" class="fullSize"></div>
+
+</div>
+<div id="toolbar">
+    <script type="module">
+        const {
+            Viewer
+        } = window.Cesium;
+
+        import MVTImageryProvider from "./MVTImageryProvider.js";
+
+        const viewer = new Viewer("cesiumContainer");
+
+        const tileURL = "http://localhost:5000/{z}/{x}/{y}";
+
+        const options = {
+            style: {
+                version: 8,
+                glyphs: "https://cdn.rawgit.com/klokantech/mapbox-gl-js-offline-example/v1.0/font/{fontstack}/{range}.pbf",
+                layers: [
+                    {
+                        id: "points",
+                        type: "symbol",
+                        source: "points",
+                        "source-layer": "test",
+                        layout: {
+                            "text-field": "{ABBREV}",
+                            "text-font": ["Open Sans Semibold"],
+                            "symbol-placement": "point",
+                            "symbol-spacing": 600,
+                            "text-size": 20
+                        },
+                        paint: {
+                            "text-color": "#FFFFFF",
+                            "text-halo-width": 1,
+                            "text-halo-blur": 0,
+                            "text-halo-color": "#000000",
+                            "text-opacity": 1
+                        }
+                    }
+                ],
+                sources: {
+                    points: {
+                        type: "vector",
+                        minzoom: 0,
+                        maxzoom: 17,
+                        tiles: [tileURL]
+                    }
+                }
+            }
+        };
+
+        viewer.imageryLayers.addImageryProvider(new MVTImageryProvider(options));
+
+    </script>
+</body>
+</html>

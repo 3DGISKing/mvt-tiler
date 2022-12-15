@@ -1,0 +1,6 @@
+/node_modules
+/package-lock.json
+/src/lib/protobuf.d.ts
+/src/lib/protobuf.js
+/yarn-error.log
+/yarn.lock

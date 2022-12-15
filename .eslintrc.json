@@ -1,0 +1,67 @@
+{
+    "env": {
+        "browser": true,
+        "jquery": true
+    },
+    "extends": ["airbnb", "prettier"],
+    "plugins": ["prettier", "@typescript-eslint"],
+    "rules": {
+        "complexity": ["error", { "max": 25 }],
+        "func-names": ["error", "never"],
+        "import/prefer-default-export": "off",
+
+        // disallow the use of console
+        "no-console": ["error", { "allow": ["assert", "info", "warn", "error"] }],
+
+        // Disallow Reassignment of Function Parameters
+        "no-param-reassign": ["error", { "props": false }],
+
+        // disallow dangling underscores in identifiers (no-underscore-dangle)
+        "no-underscore-dangle": "off",
+        "no-plusplus": "off",
+        "object-shorthand": ["error", "consistent"],
+        "prefer-destructuring": ["error", { "object": false, "array": false }],
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto",
+                "useTabs": false
+            }
+        ],
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+                "js": "never",
+                "ts": "never"
+            }
+        ],
+        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+        "no-alert": "off",
+        "no-continue": "off",
+        "no-restricted-imports": "off",
+
+        // from https://stackoverflow.com/questions/63961803/eslint-says-all-enums-in-typescript-app-are-already-declared-in-the-upper-scope
+        "no-shadow": "off",
+        "@typescript-eslint/no-shadow": ["error"],
+
+        // from https://stackoverflow.com/questions/57802057/eslint-configuring-no-unused-vars-for-typescript
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-unused-vars": ["error"]
+    },
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".ts"]
+            }
+        }
+    },
+    "globals": {
+        "CONSTRUKTED_AJAX": true,
+        "CONSTRUKTEDXR": true,
+        "Cesium": true,
+        "currentUser": true,
+        "construktedAssetViewer": true
+    },
+    "parser": "@typescript-eslint/parser"
+}
