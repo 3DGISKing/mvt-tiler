@@ -2,7 +2,7 @@ const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
 
-const mvtTilePath = "D:/wwtest";
+const mvtTilePath = "mvt-tileset";
 const port = 5000;
 
 if (!fs.existsSync(mvtTilePath)) {
