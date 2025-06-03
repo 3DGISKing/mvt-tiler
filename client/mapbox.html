@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>World Cities Vector Tile</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <link href="./mapbox-gl.css" rel="stylesheet" />
+        <script src="./mapbox-gl-dev.js"></script>
+
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            mapboxgl.accessToken =
+                "pk.eyJ1IjoiM2RnaXNraW5nIiwiYSI6ImNtMnNvYmF5bDF3OGcya3E4Mm41MjJhYWUifQ.eyjl7EtxA-HVY3fUTDXqZw";
+
+            const map = new mapboxgl.Map({
+                container: "map", // container ID
+                style: "mapbox://styles/mapbox/satellite-v9",
+                center: [-74.5, 40], // starting position [lng, lat]. Note that lat must be set between -90 and 90
+                zoom: 1, // starting zoom,
+                devtools: false,
+                projection: "globe"
+            });
+
+            window.map = map;
+
+            map.on("load", function () {
+                map.addSource("word-cities-source", {
+                    type: "vector",
+                    tiles: ["http://localhost:5000/{z}/{x}_{y}_{z}.mvt"], // Replace with your tileset URL
+                    minzoom: 0,
+                    maxzoom: 7
+                });
+
+                map.addLayer({
+                    id: "word-cities",
+                    type: "circle",
+                    source: "word-cities-source",
+                    "source-layer": "world-cities", // Replace with the layer name in your MVT
+                    paint: {
+                        "circle-color": "#FFFF00"
+                    }
+                });
+
+                map.addLayer({
+                    id: "word-cities-labels",
+                    type: "symbol",
+                    source: "word-cities-source",
+                    "source-layer": "world-cities", // Replace with the layer name in your MVT
+                    layout: {
+                        "text-field": ["get", "CITY_NAME"],
+                        "text-variable-anchor": ["top", "bottom", "left", "right"],
+                        "text-radial-offset": 0.5,
+                        "text-justify": "auto",
+                        "icon-image": ["get", "icon"]
+                    },
+                    paint: {
+                        "text-color": "#ffffff"
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

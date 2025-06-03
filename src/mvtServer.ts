@@ -53,7 +53,6 @@ function start() {
     }
 
     app.use(cors());
-    //app.use(express.static(mvtTilePath));
 
     app.get("/:z/:mvtFileName", sendMVT);
 

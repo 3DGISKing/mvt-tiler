@@ -1,5 +1,11 @@
 # Change Log
 
+### 1.0.5 - 2025-06-03
+
+#### Added
+
+-   World Cities, mapbox sample.
+
 ### 1.0.4 - 2025-06-03
 
 #### Fixed
