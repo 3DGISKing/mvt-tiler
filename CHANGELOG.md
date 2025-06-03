@@ -1,5 +1,11 @@
 # Change Log
 
+### 1.0.6 - 2025-06-03
+
+#### Fixed
+
+-   cesium incorrectly renders.
+
 ### 1.0.5 - 2025-06-03
 
 #### Added

@@ -17,18 +17,36 @@ function start() {
         const z = req.params.z;
         const mvtFileName = req.params.mvtFileName;
 
-        // const tokens = mvtFileName;
-
-        // const z = parseInt(tokens[1]);
-        // const x = parseInt(tokens[2]);
-        // const y = parseInt(tokens[3]);
-
-        // if (isNaN(y)) {
-        //     console.log(1);
-        // }
-
         const filePath = `${mvtTilePath}/${z}/${mvtFileName}`;
-        console.log(filePath);
+
+        if (!fs.existsSync(filePath)) {
+            res.status(404).send(`Tile not found: ${filePath}`);
+            return;
+        }
+
+        const readStream = fs.createReadStream(filePath);
+
+        readStream.on("open", function (data: any) {
+            res.setHeader("Content-Type", "application/vnd.mapbox-vector-tile");
+            readStream.pipe(res);
+        });
+
+        readStream.on("error", (err: any) => {
+            if (err.code === "ENOENT") {
+                res.status(404).send(`Tile not found: ${filePath}`);
+            } else {
+                console.error(`Error reading tile: ${err.message}`);
+                res.status(500).send("Internal server error");
+            }
+        });
+    }
+
+    function sendMVTCesium(req: any, res: any, next: any) {
+        const x = req.params.x;
+        const y = req.params.y;
+        const z = req.params.z;
+
+        const filePath = `${mvtTilePath}/${z}/${x}_${y}_${z}.mvt`;
 
         if (!fs.existsSync(filePath)) {
             res.status(404).send(`Tile not found: ${filePath}`);
@@ -54,7 +72,11 @@ function start() {
 
     app.use(cors());
 
+    // from mapbox
     app.get("/:z/:mvtFileName", sendMVT);
+
+    // from cesium
+    app.get("/:z/:x/:y", sendMVTCesium);
 
     const port = 5000;
 

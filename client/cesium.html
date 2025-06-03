@@ -12,6 +12,16 @@
     <script src="https://cesium.com/downloads/cesiumjs/releases/1.99/Build/CesiumUnminified/Cesium.js"></script>
     <link href="https://cesium.com/downloads/cesiumjs/releases/1.99/Build/Cesium/Widgets/widgets.css" rel="stylesheet"/>
 
+    <style>
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+
     <script>
         const module = {};
     </script>
@@ -48,16 +58,28 @@
                 glyphs: "https://cdn.rawgit.com/klokantech/mapbox-gl-js-offline-example/v1.0/font/{fontstack}/{range}.pbf",
                 layers: [
                     {
-                        id: "points",
+                        id: "world-cities-points",
+                        type: "circle",
+                        source: "world-cities-points",
+                        "source-layer": "world-cities",
+                        paint: {
+                            "circle-radius": 8,
+                            "circle-stroke-color": "#000",
+                            "circle-stroke-width": 3,
+                            "circle-color": "#FFFF00",
+                        }
+                    },
+                    {
+                        id: "world-cities-name",
                         type: "symbol",
-                        source: "points",
+                        source: "world-cities-points",
                         "source-layer": "world-cities",
                         layout: {
                             "text-field": "{CITY_NAME}",
                             "text-font": ["Open Sans Semibold"],
                             "symbol-placement": "point",
                             "symbol-spacing": 600,
-                            "text-size": 20
+                            "text-size": 18
                         },
                         paint: {
                             "text-color": "#FFFFFF",
@@ -69,10 +91,10 @@
                     }
                 ],
                 sources: {
-                    points: {
+                    "world-cities-points": {
                         type: "vector",
                         minzoom: 0,
-                        maxzoom: 17,
+                        maxzoom: 7,
                         tiles: [tileURL]
                     }
                 }
