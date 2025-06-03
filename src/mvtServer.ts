@@ -1,9 +1,8 @@
-const express = require("express");
 const fs = require("fs");
+const express = require("express");
 const cors = require("cors");
 
 const mvtTilePath = "mvt-tileset";
-const port = 5000;
 
 if (!fs.existsSync(mvtTilePath)) {
     console.error(`${mvtTilePath} does not exsit`);
@@ -11,52 +10,58 @@ if (!fs.existsSync(mvtTilePath)) {
     start();
 }
 
-function sendMVT(req: any, res: any, next: any) {
-    res.set({
-        "Content-Type": "application/vnd.mapbox-vector-tile",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-    });
-
-    const tokens = req.url.split("/");
-
-    const z = parseInt(tokens[1]);
-    const x = parseInt(tokens[2]);
-    const y = parseInt(tokens[3]);
-
-    const filePath = `${mvtTilePath}/${z}/${x}_${y}_${z}.mvt`;
-
-    if (!fs.existsSync(filePath)) {
-        next(new Error(`tile: x = ${x} y = ${y} z = ${z} does not exsit`));
-        return;
-    }
-
-    try {
-        const readStream = fs.createReadStream(filePath);
-
-        readStream.on("error", function () {
-            next(new Error(req.url));
-        });
-
-        readStream.on("data", function (data: any) {
-            res.send(data);
-        });
-    } catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        next(new Error(error.message));
-    }
-}
-
 function start() {
     const app = express();
 
-    app.options("*", cors());
-    app.use(express.static(mvtTilePath));
-    app.get("*", sendMVT);
+    function sendMVT(req: any, res: any, next: any) {
+        const z = req.params.z;
+        const mvtFileName = req.params.mvtFileName;
 
-    const server = app.listen(port);
+        // const tokens = mvtFileName;
 
-    console.info(`server started at port: ${port}`);
+        // const z = parseInt(tokens[1]);
+        // const x = parseInt(tokens[2]);
+        // const y = parseInt(tokens[3]);
+
+        // if (isNaN(y)) {
+        //     console.log(1);
+        // }
+
+        const filePath = `${mvtTilePath}/${z}/${mvtFileName}`;
+        console.log(filePath);
+
+        if (!fs.existsSync(filePath)) {
+            res.status(404).send(`Tile not found: ${filePath}`);
+            return;
+        }
+
+        const readStream = fs.createReadStream(filePath);
+
+        readStream.on("open", function (data: any) {
+            res.setHeader("Content-Type", "application/vnd.mapbox-vector-tile");
+            readStream.pipe(res);
+        });
+
+        readStream.on("error", (err: any) => {
+            if (err.code === "ENOENT") {
+                res.status(404).send(`Tile not found: ${filePath}`);
+            } else {
+                console.error(`Error reading tile: ${err.message}`);
+                res.status(500).send("Internal server error");
+            }
+        });
+    }
+
+    app.use(cors());
+    //app.use(express.static(mvtTilePath));
+
+    app.get("/:z/:mvtFileName", sendMVT);
+
+    const port = 5000;
+
+    const server = app.listen(port, () => {
+        console.info(`Server started at port: ${port}`);
+    });
 }
 
 export {};
