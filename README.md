@@ -8,7 +8,7 @@ Simply Builds mapbox vector tilesets from of GeoJSON(for now supports only point
 
 ```
 yarn build:protobuf
-yarn gen-mvt-tilset
+yarn gen-mvt-tileset
 ```
 
 ## To test generate mvt tiles
