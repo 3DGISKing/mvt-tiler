@@ -1,5 +1,11 @@
 # Change Log
 
+### 1.0.4 - 2025-06-03
+
+#### Fixed
+
+-   Wrong logic to calculate min, max of tileX tileY.
+
 ### 1.0.3 - 2025-06-03
 
 #### Fixed

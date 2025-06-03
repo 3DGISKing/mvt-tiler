@@ -43,11 +43,11 @@ function closePathCommandInteger(count: number) {
 }
 
 function minGeographicTileX(bbox: BBox, level: number) {
-    const westNorth = new Cartographic(CesiumMath.toRadians(bbox[0]), CesiumMath.toRadians(bbox[3]));
+    const westSouth = new Cartographic(CesiumMath.toRadians(bbox[0]), CesiumMath.toRadians(bbox[1]));
 
     const ret = new Cartesian2();
 
-    tilingScheme.positionToTileXY(westNorth, level, ret);
+    tilingScheme.positionToTileXY(westSouth, level, ret);
 
     return ret.x;
 }
@@ -63,7 +63,7 @@ function minGeographicTileY(bbox: BBox, level: number) {
 }
 
 function maxGeographicTileX(bbox: BBox, level: number) {
-    const eastNorth = new Cartographic(CesiumMath.toRadians(bbox[1]), CesiumMath.toRadians(bbox[3]));
+    const eastNorth = new Cartographic(CesiumMath.toRadians(bbox[2]), CesiumMath.toRadians(bbox[3]));
 
     const ret = new Cartesian2();
 
@@ -73,11 +73,11 @@ function maxGeographicTileX(bbox: BBox, level: number) {
 }
 
 function maxGeographicTileY(bbox: BBox, level: number) {
-    const westSouth = new Cartographic(CesiumMath.toRadians(bbox[0]), CesiumMath.toRadians(bbox[1]));
+    const eastSouth = new Cartographic(CesiumMath.toRadians(bbox[2]), CesiumMath.toRadians(bbox[1]));
 
     const ret = new Cartesian2();
 
-    tilingScheme.positionToTileXY(westSouth, level, ret);
+    tilingScheme.positionToTileXY(eastSouth, level, ret);
 
     return ret.y;
 }
