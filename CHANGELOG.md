@@ -1,5 +1,11 @@
 # Change Log
 
+### 1.0.7 - 2025-06-04
+
+#### Updated
+
+-   generateMVTTileBuffer.
+
 ### 1.0.6 - 2025-06-03
 
 #### Fixed

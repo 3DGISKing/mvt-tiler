@@ -1,13 +1,11 @@
 {
     "name": "mvt-tiler",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "",
     "main": "./src/testTiler.ts",
     "scripts": {
-        "build:protobuf": "pbjs -t static-module -w es6 -o src/lib/protobuf.js vector-tile-spec/2.1/vector_tile.proto && pbts -o src/lib/protobuf.d.ts src/lib/protobuf.js",
         "gen-mvt-tileset": "ts-node-dev --respawn ./src/testTiler.ts",
-        "mvt-server": "ts-node-dev ./src/mvtServer.ts",
-        "start": "ts-node ./src/testTiler.ts"
+        "mvt-server": "ts-node-dev ./src/mvtServer.ts"
     },
     "repository": {
         "type": "git",
