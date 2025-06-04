@@ -5,7 +5,7 @@ import { TilingOptions } from "./tilingOptions";
 import getSimplifiedFeatures from "./getSimpifiedFeatures";
 import generateMVTTileBuffer from "./generateMVTTileBuffer";
 
-export default function exportOneTile(
+export default function exportOneMVTTile(
     tilingOptions: TilingOptions,
     featureCollection: FeatureCollection,
     x: number,

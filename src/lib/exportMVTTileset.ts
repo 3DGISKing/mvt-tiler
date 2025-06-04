@@ -1,48 +1,39 @@
 import { Cartesian2, Cartographic, Math as CesiumMath, WebMercatorTilingScheme } from "cesium";
 import { BBox, FeatureCollection, Point } from "geojson";
 import { TilingOptions } from "./tilingOptions";
-import exportOneTile from "./exportOneTile";
+import exportOneMVTTile from "./exportOneMVTTile";
 
 const tilingScheme = new WebMercatorTilingScheme();
+const scratchCartesian2 = new Cartesian2();
 
 function minGeographicTileX(bbox: BBox, level: number) {
     const westSouth = new Cartographic(CesiumMath.toRadians(bbox[0]), CesiumMath.toRadians(bbox[1]));
+    tilingScheme.positionToTileXY(westSouth, level, scratchCartesian2);
 
-    const ret = new Cartesian2();
-
-    tilingScheme.positionToTileXY(westSouth, level, ret);
-
-    return ret.x;
+    return scratchCartesian2.x;
 }
 
 function minGeographicTileY(bbox: BBox, level: number) {
     const westNorth = new Cartographic(CesiumMath.toRadians(bbox[0]), CesiumMath.toRadians(bbox[3]));
 
-    const ret = new Cartesian2();
+    tilingScheme.positionToTileXY(westNorth, level, scratchCartesian2);
 
-    tilingScheme.positionToTileXY(westNorth, level, ret);
-
-    return ret.y;
+    return scratchCartesian2.y;
 }
 
 function maxGeographicTileX(bbox: BBox, level: number) {
     const eastNorth = new Cartographic(CesiumMath.toRadians(bbox[2]), CesiumMath.toRadians(bbox[3]));
 
-    const ret = new Cartesian2();
+    tilingScheme.positionToTileXY(eastNorth, level, scratchCartesian2);
 
-    tilingScheme.positionToTileXY(eastNorth, level, ret);
-
-    return ret.x;
+    return scratchCartesian2.x;
 }
 
 function maxGeographicTileY(bbox: BBox, level: number) {
     const eastSouth = new Cartographic(CesiumMath.toRadians(bbox[2]), CesiumMath.toRadians(bbox[1]));
+    tilingScheme.positionToTileXY(eastSouth, level, scratchCartesian2);
 
-    const ret = new Cartesian2();
-
-    tilingScheme.positionToTileXY(eastSouth, level, ret);
-
-    return ret.y;
+    return scratchCartesian2.y;
 }
 
 function getBoundingBox(featureCollection: FeatureCollection): BBox {
@@ -85,7 +76,7 @@ function getBoundingBox(featureCollection: FeatureCollection): BBox {
     return [minX, minY, maxX, maxY];
 }
 
-function exportMVTTileset(featureCollection: FeatureCollection, options: TilingOptions) {
+export default function exportMVTTileset(featureCollection: FeatureCollection, options: TilingOptions) {
     const bbox = getBoundingBox(featureCollection);
 
     const minLevel = options.minLevel;
@@ -100,10 +91,8 @@ function exportMVTTileset(featureCollection: FeatureCollection, options: TilingO
 
         for (let x = minX; x <= maxX; x++) {
             for (let y = minY; y <= maxY; y++) {
-                exportOneTile(options, featureCollection, x, y, level);
+                exportOneMVTTile(options, featureCollection, x, y, level);
             }
         }
     }
 }
-
-export { exportMVTTileset };

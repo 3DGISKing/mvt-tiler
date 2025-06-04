@@ -1,6 +1,6 @@
 const fs = require("fs");
 import { FeatureCollection } from "geojson";
-import { exportMVTTileset } from "./lib/tiler";
+import exportMVTTileset from "./lib/exportMVTTileset";
 
 const savePath = "mvt-tileset";
 
