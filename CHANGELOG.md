@@ -1,5 +1,11 @@
 # Change Log
 
+### 1.0.8 - 2025-06-09
+
+#### Added
+
+-   testExportOneMVTTile.
+
 ### 1.0.7 - 2025-06-04
 
 #### Updated
