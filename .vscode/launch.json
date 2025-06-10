@@ -7,11 +7,11 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "testTiler",
+            "name": "gen-mvt-tileset",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\src\\testTiler.ts",
+            "program": "${workspaceFolder}\\src\\testExportMVTTileset.ts",
             "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
             "sourceMaps": true,
             "cwd": "${workspaceRoot}"
@@ -24,6 +24,18 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\src\\mvtServer.ts",
+            "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+            "sourceMaps": true,
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "testExportOneMVTTile",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\src\\testExportOneMVTTile.ts",
             "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
             "sourceMaps": true,
             "cwd": "${workspaceRoot}"
